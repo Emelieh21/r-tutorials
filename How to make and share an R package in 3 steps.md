@@ -81,7 +81,7 @@ That's it! Now in your working directory folder there should be a new folder wit
 
 Now, what is handy from the function above is that it creates the folders and files you need in a new package folder ("FlightsR" in this case). In the `/R` folder you see now that every function you added has its own .R script and in the `/man` folder there is an .Rd file for each of the functions.
 
-You can now go and manually change everything in these files that needs to be changed (documentation needs to be added, the import of external packages to be defined, etc.) - or use [roxygen2](https://github.com/klutometis/roxygen) and [devtools](https://cran.r-project.org/web/packages/devtools/index.html) to do it for you. Roxygen2 will complete the documentation in each .Rd file correctly and will create a _NAMESPACE_ file for you. To do this, make sure you **delete the current incomplete files** (this is, all the files in the `/man` folder and the _NAMESPACE_ file), otherwise you will get an error when you want to use devtools and roxygen2 later.
+You can now go and manually change everything in these files that needs to be changed (documentation needs to be added, the import of external packages to be defined, etc.) - or use [roxygen2](https://github.com/klutometis/roxygen) and [devtools](https://cran.r-project.org/web/packages/devtools/index.html) to do it for you. Roxygen2 will complete the documentation in each .Rd file correctly and will create a _NAMESPACE_ file for you. To do this, make sure you **delete the current incomplete files** (this is, all the files in the `/man` folder and the _NAMESPACE_ file), otherwise you will get an error when you use the `document()` function later.
 
 Now extra information needs to be added in the functions (for example, what are the **parameters** of the function, an **example** usage, necessary library **imports**, etc.), in the following way:
 
@@ -130,7 +130,7 @@ install.packages("roxygen2")
 install.packages("devtools")
 ```
 
-And run the following commands in R:
+Make sure your working directory is set to the folder of your package and run the following commands in R:
 
 ```R
 # to automatically generate the documentation:
