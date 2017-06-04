@@ -1,6 +1,6 @@
-# How to make and share an R package in three steps 
+# How to make and share an R package in 3 steps 
 
-If you find yourself often repeating the same scripts in R, you might come to the point where you want to turn them into reusable functions and create your own R package. This article explains how to create and share your own R package in three easy steps. 
+If you find yourself often repeating the same scripts in R, you might come to the point where you want to turn them into reusable functions and create your own R package. This article explains how to create and share your own R package in 3 easy steps. 
 
 I will explain how I made [my first package](https://github.com/Emelieh21/FlightsR) and which methods I found helpful. Of course, there are many approaches and there might be better/more efficient ones - but the following 3 steps worked for me and will guide you to having your own R package ready, installed and online in no time.
 
