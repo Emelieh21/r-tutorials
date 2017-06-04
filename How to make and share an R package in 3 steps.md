@@ -30,7 +30,7 @@ KEY = Sys.getenv("flightstats_api_key")
 
 However, if you would like the login details to still be accessible the next time you open R, you can define your login details in the _.Renviron_ file (instead of the _.Rprofile_ file). The _.Renviron_ file can be found in your home directory. You can find the path to your home directory by running `Sys.getenv("HOME")`. For more info see [here](https://csgillespie.github.io/efficientR/r-startup.html). The final function to store the API key in the FlightsR package looked like [this](https://github.com/Emelieh21/FlightsR/blob/master/R/setAPIKey.R). 
 
-By the way, it might be common knowledge, but I actually did not know it before and find it quite handy: If you want to know the script of any function in R, you can find it by just typing the function name and hit enter. For example:
+**Side note:** I actually did not know this before, but find it quite handy: If you want to know the script of any function in R, you can find it by just typing the function name and hit enter. For example:
 
 ```text
 > read.csv
