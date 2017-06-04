@@ -2,7 +2,7 @@
 
 If you find yourself often repeating the same scripts in R, you might come to the point where you want to turn them into reusable functions and create your own R package. This article explains how to create and share your own R package in 3 easy steps. 
 
-I will explain how I made [my first package](https://github.com/Emelieh21/FlightsR) and which methods I found helpful. Of course, there are many approaches and there might be better/more efficient ones - but the following 3 steps worked for me and will guide you to having your own R package ready, installed and online in no time.
+I will explain how I made [my first package](https://github.com/Emelieh21/FlightsR) and which methods I found helpful. Of course, there are many approaches and there might be better or more efficient ones - but the following 3 steps worked for me and will guide you to having your own R package ready, installed and online in no time.
 
 My first R package is a wrapper for the [FlightStats API](https://developer.flightstats.com/). You can sign up for FlightStats to get a free trial API key (which unfortunately works for one month only). However, you can of course make a wrapper for any API you like or make a non-API related package. Two links I found very useful for getting started making my first package are [this one](https://stat.ethz.ch/R-manual/R-devel/library/utils/html/package.skeleton.html) and [this one](http://blog.revolutionanalytics.com/2015/11/how-to-store-and-use-authentication-details-with-r.html) (regarding the storing of API keys). Also, I learned a lot using [this package](https://github.com/ropensci/gtfsr) as an example.
 
@@ -79,7 +79,7 @@ package.skeleton(name = "FlightR", list = c("listAirlines","listAirports","sched
 
 That's it! Now in your working directory folder there should be a new folder with the name you just gave to your package. 
 
-Now what is handy from the function above is that it creates the folders and files you need in a new package folder ("FlightsR" in this case). In the `/R` folder you see now that every function you added has its own .R script and in the `/man` folder there is an .Rd file for each of the functions.
+Now, what is handy from the function above is that it creates the folders and files you need in a new package folder ("FlightsR" in this case). In the `/R` folder you see now that every function you added has its own .R script and in the `/man` folder there is an .Rd file for each of the functions.
 
 You can now go and manually change everything in these files that needs to be changed (documentation needs to be added, the import of external packages to be defined, etc.) - or use [roxygen2](https://github.com/klutometis/roxygen) and [devtools](https://cran.r-project.org/web/packages/devtools/index.html) to do it for you. Roxygen2 will complete the documentation in each .Rd file correctly and will create a _NAMESPACE_ file for you. To do this, make sure you **delete the current incomplete files** (this is, all the files in the `/man` folder and the _NAMESPACE_ file), otherwise you will get an error when you want to use devtools and roxygen2 later.
 
