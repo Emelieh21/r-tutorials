@@ -1,0 +1,32 @@
+id;name;job_title;team;department;photo_link;superior_id;score
+1;Jose Luis El Fary Cantero;Mega Boss;Management;Management;http://www.diariosur.es/prensa/fotos/200706/20/066D3UL-CUL-P1_1.jpg;NA;5
+2;Gillermo Kappen;Manager of Engineering;Management;Engineering;http://lorempixel.com/400/200/business/;1;3
+3;Emke Strijker;Manager of HR;Management;HR;http://lorempixel.com/400/200/cats/;1;3
+4;Gerald Vuijk;Manager of Marketing;Management;Marketing;http://lorempixel.com/400/200/business/;1;3
+5;Timo Hartmann;Founder;Management;Management;http://lorempixel.com/400/200/business/;NA;4
+6;Siegfried van Kampen;Teamlead Software Engineering;Software Engineering;Engineering;http://lorempixel.com/400/200/business/;2;2
+7;Rodger Verveer;Senior Software Engineer;Software Engineering;Engineering;http://lorempixel.com/400/200/business/;6;1
+8;Marta Wendt;Junior Software Engineer;Software Engineering;Engineering;http://lorempixel.com/400/200/cats/;6;1
+9;Alfons Clemens;Intern Software Engineering;Software Engineering;Engineering;http://lorempixel.com/400/200/business/;6;1
+10;Brain Hielkema;Teamlead Hardware Engineering;Hardware Engineering;Engineering;http://lorempixel.com/400/200/animals/;2;2
+11;Beerd Huitema;Analogue Specialist;Hardware Engineering;Engineering;http://lorempixel.com/400/200/animals/;10;1
+12;Keith Crombach;Field Engineer;Hardware Engineering;Engineering;http://lorempixel.com/400/200/business/;10;1
+13;Willow Ufgood;Embedded Developer;Hardware Engineering;Engineering;http://3.bp.blogspot.com/_KmOxAjZL5Uk/TLYFD_3-ecI/AAAAAAAAA7c/XFDcI97Lx_o/s320/willow-warwick-davies.jpg;10;1
+14;Gijsbertus America;Teamlead Web Development;Web Development;Engineering;http://lorempixel.com/400/200/animals/;2;2
+15;Jannik Sietsma;Full Stack Engineer Web Development;Web Development;Engineering;http://lorempixel.com/400/200/cats/;14;1
+16;Serhan van Voorthuizen;Full Stack Engineer Web Development;Web Development;Engineering;http://lorempixel.com/400/200/animals/;14;1
+17;Tanneke Horstman;Teamlead HR Accounting;HR Accounting;HR;http://lorempixel.com/400/200/business/;3;2
+18;Imara Vrieze;Payroll Specialist;HR Accounting;HR;http://lorempixel.com/400/200/cats/;17;1
+19;Rhianne Arets;Junior HR Accounting;HR Accounting;HR;http://lorempixel.com/400/200/cats/;17;1
+20;Wynand de Vette;Teamlead Recruitment;HR Recruitment;HR;http://lorempixel.com/400/200/business/;3;2
+21;Augustina Overes;Senior Recruiter;HR Recruitment;HR;http://lorempixel.com/400/200/cats/;20;1
+22;Violetta Peijnenburg;Intern Recruiter;HR Recruitment;HR;http://lorempixel.com/400/200/cats/;20;1
+23;Diya van der Schaar;Teamlead Online Marketing;Online Marketing;Marketing;http://lorempixel.com/400/200/cats/;4;2
+24;Amar Stevens;Senior Market Research Analyst;Online Marketing;Marketing;http://lorempixel.com/400/200/business/;23;1
+25;Jovana Graumans;Junior Market Research Analyst;Online Marketing;Marketing;http://lorempixel.com/400/200/animals/;23;1
+26;Al van den Nieuwendijk;SEO Manager;Online Marketing;Marketing;http://lorempixel.com/400/200/animals/;23;1
+27;Zohair Colijn;Senior Content Manager;Online Marketing;Marketing;http://lorempixel.com/400/200/business/;23;1
+28;Axl Bek;Junior Content Manager;Online Marketing;Marketing;http://lorempixel.com/400/200/animals/;23;1
+29;Mervin Faber;Teamlead Events;Events;Marketing;http://lorempixel.com/400/200/animals/;4;2
+30;Zaki Lautenbach;Junior Events Manager;Events;Marketing;http://lorempixel.com/400/200/business/;29;1
+31;Richtje Tinga;Intern Events Management;Events;Marketing;http://lorempixel.com/400/200/cats/;29;1
