@@ -1,4 +1,4 @@
-id;name;jobtitle;team;department;photo_link;supervisor_id;score
+id;name;job_title;team;department;photo_link;superior_id;score
 1;Jose Luis El Fary Cantero;Mega Boss;Management;Management;http://www.diariosur.es/prensa/fotos/200706/20/066D3UL-CUL-P1_1.jpg;NA;5
 2;Gillermo Kappen;Manager of Engineering;Management;Engineering;http://lorempixel.com/400/200/business/;1;3
 3;Emke Strijker;Manager of HR;Management;HR;http://lorempixel.com/400/200/cats/;1;3
