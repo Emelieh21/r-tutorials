@@ -19,7 +19,10 @@ audiorec <- function(kk,f){  # kk: time length in seconds; f: filename
   require(audio)
   s11 <- rep(NA_real_, 16000*kk) # rate=16000
   message("5 seconds..")
-  Sys.sleep(5)
+  for (i in c(5:1)){
+    message(i)
+    Sys.sleep(1)
+  }
   message("Recording starts now...")
   record(s11, 16000, 1)  # record in mono mode
   wait(kk)
@@ -66,6 +69,7 @@ updatePerformance <- function(results){
     dat$expected_notenames <- expected_notenames
     dat$date <- as.character(Sys.Date())
     dat$rownum <- row.names(dat)
+    dat$session <- 1
     performance <- dat
     write.csv2(performance, "performance.csv", row.names = FALSE)
     print("Done!")
@@ -79,16 +83,46 @@ updatePerformance <- function(results){
     dat$expected_notenames <- expected_notenames
     dat$date <- as.character(Sys.Date())
     dat$rownum <- row.names(dat)
+    session_id <- performance[nrow(performance),"session"] + 1
+    dat$session <- session_id
     performance <- rbind(performance, dat)
     write.csv2(performance, "performance.csv", row.names = FALSE)
     print("Done!")
+    right <- notenames(results)[notenames(results) %in% expected_notenames]
+    print(paste0("Your score (% of correct notes): ",round(length(right)/length(results)*100,1),"%"))
     return(performance)
   }
 }
 
-plotProgress <- function(performance){
-  plot(performance$noteWavNames, type = "l", col = "red", main = "Progress (green = expected & red = you)")
+plotPerformance <- function(performance){
+  plot(performance$noteWavNames, type = "l", col = "red", main = "Performance (green = expected & red = you)")
   lines(performance$expected,col="green")
 }
 
+# scoreAll <- function(performance){
+#   for (i in unique(performance$session)){
+#     print(i)
+#     df <- subset(performance, session == i)
+#     mynotes <- df$noteWavNames
+#     right <- notenames(mynotes)[notenames(mynotes) %in% expected_notenames]
+#     wrong <- mynotes[!mynotes %in% c(min(expected_notes):max(expected_notes))]
+#     right <- length(right)-length(wrong)
+#     print(paste0("Your score: ",round(right/length(mynotes)*100,1),"%"))
+#   }
+# }
 
+plotProgress <- function(performance){
+  progress <- c()
+
+  for (i in c(1:max(performance$session))){
+    #print(i)
+    dat <- performance[performance$session == i,]
+    dat$res <- dat$expected-dat$noteWavNames
+    mse <- mean(dat$res^2)
+    #print(mse)
+    progress <- c(progress,mse*-1)
+  }
+  
+  plot(progress, type = "l", yaxt="n", ylim = c(min(progress),0), lwd = 2, col = "tomato", xlab = "session", ylab = "accuracy", main = paste0("G-Scale Accuracy (",unique(performance$date[performance$session == min(performance$session)])," - ", unique(performance$date[performance$session == max(performance$session)]),")"))
+  axis(2, at = 0, labels="100%", las=2)
+}

@@ -23,5 +23,7 @@ results <- transcribeMusic(testSound, expNotes = scaleNotes)
 
 performance <- updatePerformance(results)
 
+plotPerformance(performance)
+#scoreAll(performance)
 plotProgress(performance)
-View(performance)
+#View(performance)
