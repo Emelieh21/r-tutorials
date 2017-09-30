@@ -1,12 +1,14 @@
 # Recording and Measuring Your Musical Progress with R
 
-Two weeks ago I finally fulfilled one of my lifelong dreams: I got myself a violin. I never touched a violin before, so I had to start learning everything from scratch. Thank god there are some amazing online tutorials to learn the basics (my personal favorite being [Alison Sparrow the Online Violin Tutor](https://www.youtube.com/watch?v=88G0O5unNuQ&t=18s)). However, being curious whether I actually have any feeling for it - I wanted to figure out if I could track my improvement (or lack thereof) in R. 
+Two weeks ago I finally fulfilled one of my lifelong dreams: I got myself a violin. I never touched a violin before, so I had to start learning everything from scratch. Luckily, there are some great online tutorials to learn the basics (my personal favorite being [Alison Sparrow the Online Violin Tutor](https://www.youtube.com/watch?v=88G0O5unNuQ&t=18s)). However, being curious whether I actually have any feeling for it - I wanted to figure out if I could track my improvement (or lack thereof) in R. 
 
-![gif made with http://gifmaker.me/](gscales_transcribed2.gif)
+My goal is to to **extract the notes** from an example sound file and then **record myself playing it** to see how close my notes are to the original ones, and repeat this daily to see if I am getting better. [This article](http://www.vesnam.com/Rblog/transcribing-music-from-audio-files-2/) by Vessy was a huge help in the matter. In one of his examples he uses the recording of a G-scale played by a violin. Since the melody is easy to repeat and it is recorded with the right instrument - this [G-scale.wav](http://www.vesnam.com/Rblog/wp-content/uploads/2013/01/G-scale.wav) was actually perfect for my objective. Therefore, I decided track my progress by playing the G-scale every day.
 
-First of all, I wanted to figure out if it was possible and if yes, how to read sound files into R. [This article](http://www.vesnam.com/Rblog/transcribing-music-from-audio-files-2/) by Vessy was a huge help in the matter. In this post I will actually make use of his same [G-scale.wav](http://www.vesnam.com/Rblog/wp-content/uploads/2013/01/G-scale.wav) sound file (it is a G-scale played by a violin, so it was perfect for me). 
+![gif made with http://gifmaker.me/](gscales_transcribed4.gif)
 
-Reading in a sound file in R turned out to be surprisingly easy with the [tuneR package](https://cran.r-project.org/web/packages/tuneR/index.html) (on my PC at least this works - I have a 32 bit Windows 10 laptop):
+​								_Melody plots of daily G-scale recordings_
+
+To see the full scripts that I have been using the last ten days, please see the [ProgressAnalysis.R](ProgressAnalysis.R) and the [ProgressAnalysisFunctions.R](ProgressAnalysisFunctions.R) files. In what follows I will explain the process step by step. First of all, let's read the original G-scale.wav file into R. This turned out to be surprisingly easy with the [tuneR package](https://cran.r-project.org/web/packages/tuneR/index.html) (at least on my PC this works - I have a 32 bit Windows 10 laptop):
 
 ```R
 #install.packages("tuneR")
@@ -16,7 +18,42 @@ originalSound <- readWave("G-scale.wav")
 play(originalSound) # opens Windows Media Player to play the sound. Be ware that the window does not automatically close when the audio file is finished playing. You need to close the window before you can continue in R.
 ```
 
-My end goal is to **extract the notes** from an example sound file and then **record myself playing it** to see how close I am to the example file (in this case the perfect G-scale). Is it possible to record yourself in R? Oh yes, it is. For this I used the [audio package](https://cran.r-project.org/web/packages/audio/audio.pdf). With help from C. Doan's answer in this [Stackoverflow post](https://stackoverflow.com/questions/22619561/audio-record-in-r), I included the following function to record myself:
+Great! And with the tuneR package it is actually possible to play the sound straight from R. My next step is to extract the frequencies and the notes from this sound. In [the article from Vessy](http://www.vesnam.com/Rblog/transcribing-music-from-audio-files-2/) that I mentioned, he presents his `transcribeMusic()` function that does exactly this - and also it creates a **melodyplot** of the recording (see examples above). With the expNotes parameter you can visualize the expected notes in the plot (for the singstar feeling). Note: it might an extra dependency is needed (the pastecs package) - but this is easily solved with `install.packages("pastecs")`.
+
+```R
+library(tuneR)
+
+scaleNotesFreqs<- c(NA, NA, NA, 196.00, 196.00, NA, 220.0, NA, NA, 246.9, NA, 261.6, 261.6, NA, 293.7, 293.7, NA, 329.6, 329.6, NA, 370.0, 370.0, NA, 392.0, NA)
+scaleNotes <- noteFromFF(scaleNotesFreqs)
+
+transcribeMusic <- function(wavFile, widthSample = 4096, expNotes = NULL) {
+  #See details about the wavFile, plot it, and/or play it
+  #summary(wavFile)
+  plot(wavFile)
+  
+  perioWav <- periodogram(wavFile, width = widthSample)
+  freqWav <- FF(perioWav)
+  noteWav <- noteFromFF(freqWav) 
+  
+  melodyplot(perioWav, observed = noteWav, 
+             expected = expNotes, plotenergy = FALSE, 
+             main = Sys.Date())
+  
+  #Print out notes names
+  noteWavNames <- noteWav[!is.na(noteWav)]
+  noteWavNames <- noteWavNames[1:21] # I limited the number of notes to 21 here - because that is the number of notes extracted from the G-Scale.wav file and to make comparisons later I need the extractions to be of the same length. 
+  print(noteWavNames)
+  print(notenames(noteWavNames))
+  return(noteWavNames)
+}
+
+transcribeMusic(originalSound, expNotes = scaleNotes)
+# [1]  -2  -2  -2 -12 -12 -10 -10  -9  -9  -9  -7  -7  -7  -5  -5  -5  -3  -3  -3  -2  -2
+# [1] "g'"  "g'"  "g'"  "a"   "a"   "b"   "b"   "c'"  "c'"  "c'"  "d'"  "d'"  "d'"  "e'"  "e'" 
+# [16] "e'"  "f#'" "f#'" "f#'" "g'"  "g'" 
+```
+
+Now we know how to read a sound file into R and how to extract the notes from it. What I want to do though, is to extract the notes from my own recordings right after I played them. With the [audio package](https://cran.r-project.org/web/packages/audio/audio.pdf) it is possible to record yourself in R. With help from C. Doan's answer in this [post](https://stackoverflow.com/questions/22619561/audio-record-in-r), I included the following function to record myself:
 
 ```R
 audiorec <- function(kk,f){  # kk: time length in seconds; f: filename
@@ -37,32 +74,7 @@ audiorec <- function(kk,f){  # kk: time length in seconds; f: filename
 }
 ```
 
-Then I will also need to be able to extract the notes from my recordings. Vessy's function to transcribe music is exactly what I need:
-
-```R
-transcribeMusic <- function(wavFile, widthSample = 4096, expNotes = NULL) {
-  #See details about the wavFile, plot it, and/or play it
-  #summary(wavFile)
-  plot(wavFile)
-  
-  perioWav <- periodogram(wavFile, width = widthSample)
-  freqWav <- FF(perioWav)
-  noteWav <- noteFromFF(freqWav) 
-  
-  melodyplot(perioWav, observed = noteWav, 
-             expected = expNotes, plotenergy = FALSE, 
-             main = Sys.Date())
-  
-  #Print out notes names
-  noteWavNames <- noteWav[!is.na(noteWav)]
-  noteWavNames <- noteWavNames[1:21]
-  print(noteWavNames)
-  print(notenames(noteWavNames))
-  return(noteWavNames)
-}
-```
-
-Let's quickly inspect the originalSound file:
+I want the original recording and my version of it to be comparible - so I want them to have the same length. Let's quickly inspect the originalSound file:
 
 ```R
 > summary(originalSound)
@@ -81,33 +93,85 @@ Let's quickly inspect the originalSound file:
 #-32770.00  -6218.00    106.00      5.79   6830.00  29260.00 
 ```
 
-We can see it has a duration of 6.3 seconds and a sampling rate of 16000 Hertz. This sampling rate is the same as in our recording function. To start recording and play the recording, we can now run:
+We can see it has a duration of **6.3 seconds** and a **sampling rate of 16000** Hertz (the same as in our recording function). If you want to learn more about the digitalisation of sound and what exactly the sampling rate is - I highly recommend you to check out [this introduction into sound analysis](https://cran.r-project.org/web/packages/seewave/vignettes/seewave_analysis.pdf). To record, we can now run:
 
 ```R
 # Here I create a unique filename with the current date and time (to avoid overwriting earlier recordings)
 date = gsub(":","-",as.character(Sys.time()))
-filename = paste0("recordings/",date,"_recording.wav")
+filename = paste0(date,"_recording.wav")
 
-# start the actual reacording
+# start the actual recording
 audiorec(6.3, filename)
 
-### Wait running the script from here until after the restart! ###
-
-testSound <- readWave(filename)
-tuneR::play(testSound)
+### Wait for R to restart! ###
 ```
 
-Now let's extract the notes that have been played and plot them together with the expected notes:
+Now we can extract the notes from the recording and compare them to the notes from the originalSound:
 
 ```R
-scaleNotesFreqs<- c(NA, NA, NA, 196.00, 196.00, NA, 220.0, NA, NA, 246.9, NA, 261.6, 261.6, NA, 293.7, 293.7, NA, 329.6, 329.6, NA, 370.0, 370.0, NA, 392.0, NA)
-scaleNotes <- noteFromFF(scaleNotesFreqs)
+testSound <- readWave(filename)
+tuneR::play(testSound)
 
 results <- transcribeMusic(testSound, expNotes = scaleNotes)
+
+# notes from the original sound in the same format:
+expected_notes <- c(-14,-14,-14,-12,-12,-10,-10,-9,-9,-9,-7,-7,-7,-5,-5,-5,-3,-3,-3,-2,-2)
+expected_notenames <- notenames(expected_notes)
+
 ```
 
-![image](progress_plot.jpg)
+Since I want to keep track of my recordings over a longer period of time - I collect the results of each recording session in a csv. To automize this I used the following `updatePerfomance()` function:
 
-With the performance csv we can calculate the accuracy over time:
+```R
+updatePerformance <- function(results){
+  files <- list.files()
+  if (("performance.csv" %in% files) == FALSE){
+    message("No performance csv existing yet - creating it now...")
+    dat <- as.data.frame(results)
+    names(dat) <- "noteWavNames"
+    dat$notenames <- notenames(results)
+    dat$expected <- expected_notes
+    dat$expected_notenames <- expected_notenames
+    dat$date <- as.character(Sys.Date())
+    dat$rownum <- row.names(dat)
+    dat$session <- 1 # every recording gets a unique session ID
+    performance <- dat
+    write.csv2(performance, "performance.csv", row.names = FALSE)
+    print("Done!")
+    return(performance)
+  } else {
+    performance <- read.csv2("performance.csv", stringsAsFactors = FALSE)
+    dat <- as.data.frame(results)
+    names(dat) <- "noteWavNames"
+    dat$notenames <- notenames(results)
+    dat$expected <- expected_notes
+    dat$expected_notenames <- expected_notenames
+    dat$date <- as.character(Sys.Date())
+    dat$rownum <- row.names(dat)
+    session_id <- performance[nrow(performance),"session"] + 1
+    dat$session <- session_id
+    performance <- rbind(performance, dat)
+    write.csv2(performance, "performance.csv", row.names = FALSE)
+    print("Done!")
+    return(performance)
+  }
+}
 
-![image](g-scale_accuracy.png)
+# Now we can add the results of the recording to our performance csv:
+updatePerformance(results)
+```
+
+As a simple visualisation, we can plot the expected notes with our notes in the same graph to see the difference:
+
+```R
+plot(performance$noteWavNames, type = "l", col = "red") # the red line show what I played
+lines(performance$expected,col="green") # the green line shows what was expected
+```
+
+![image](performance_plot.png)
+
+To calculate the accuracy of the recorded G-scale, we can calculate the difference between numeric extractions of our notes and the expected notes. Meaning - we can treat the recorded notes as an estimation (*ŷ*) of the expected notes (*y*) and calculate the residuals from them. 
+
+As soon as we have multitude of recording sessions in our performance dataframe, we can compare the accuracy of different sessions by plotting them:
+
+![image](G-scale_accuracy_smooth.jpeg)

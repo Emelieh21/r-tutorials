@@ -99,30 +99,19 @@ plotPerformance <- function(performance){
   lines(performance$expected,col="green")
 }
 
-# scoreAll <- function(performance){
-#   for (i in unique(performance$session)){
-#     print(i)
-#     df <- subset(performance, session == i)
-#     mynotes <- df$noteWavNames
-#     right <- notenames(mynotes)[notenames(mynotes) %in% expected_notenames]
-#     wrong <- mynotes[!mynotes %in% c(min(expected_notes):max(expected_notes))]
-#     right <- length(right)-length(wrong)
-#     print(paste0("Your score: ",round(right/length(mynotes)*100,1),"%"))
-#   }
-# }
-
-plotProgress <- function(performance){
+plotProgress <- function(performance, by){
   progress <- c()
 
-  for (i in c(1:max(performance$session))){
-    #print(i)
-    dat <- performance[performance$session == i,]
+  for (i in unique(performance[,by])){
+    print(i)
+    dat <- performance[performance[,by] == i,]
     dat$res <- dat$expected-dat$noteWavNames
     mse <- mean(dat$res^2)
-    #print(mse)
+    print(mse)
     progress <- c(progress,mse*-1)
   }
   
-  plot(progress, type = "l", yaxt="n", ylim = c(min(progress),0), lwd = 2, col = "tomato", xlab = "session", ylab = "accuracy", main = paste0("G-Scale Accuracy (",unique(performance$date[performance$session == min(performance$session)])," - ", unique(performance$date[performance$session == max(performance$session)]),")"))
+  plot(progress, type = "l", yaxt="n", xaxt="n",ylim = c(min(progress),0), lwd = 2, col = "tomato", xlab = by, ylab = "accuracy", main = paste0("G-Scale Accuracy (",unique(performance$date[performance$session == min(performance$session)])," - ", unique(performance$date[performance$session == max(performance$session)]),")"))
   axis(2, at = 0, labels="100%", las=2)
+  axis(1, at = c(1:length(unique(performance[,by]))),labels = unique(performance[,by]))
 }
