@@ -175,3 +175,4 @@ To calculate the accuracy of the recorded G-scale, we can calculate the differen
 As soon as we have multitude of recording sessions in our performance dataframe, we can compare the accuracy of different sessions by plotting them:
 
 ![image](G-scale_accuracy_smooth.jpeg)
+
