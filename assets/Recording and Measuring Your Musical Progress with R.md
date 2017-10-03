@@ -111,7 +111,7 @@ audiorec(6.3, filename)
 ### Wait for R to restart! ###
 ```
 
-It is important to wait here until R is restarted. Normally (at least in my experience) the objects should appear again in the local R environment (otherwise it can be quickly solved by rerunning some parts of the script and looking up the filename of the recording). Now we can extract the notes from the recording and compare them to the notes from the originalSound:
+We need a quick restart after using the record function from the audio package. Normally (at least in my experience) the objects should appear again in the local R environment (otherwise it can be quickly solved by rerunning some parts of the script and looking up the filename of the recording). Now we can extract the notes from the recording and compare them to the notes from the originalSound:
 
 ```R
 testSound <- readWave(filename)
@@ -162,7 +162,7 @@ updatePerformance <- function(results){
 }
 
 # Now we can add the results of the recording to our performance csv:
-updatePerformance(results)
+performance <- updatePerformance(results)
 ```
 
 As a simple visualisation, we can plot the expected notes with our notes in the same graph to see how far off the notes of the recordings were:
@@ -174,7 +174,7 @@ lines(performance$expected,col="green") # the green line shows what was expected
 
 ![image](performance_plot.png)
 
-To calculate the **accuracy of the recorded G-scale**, we can calculate the difference between numeric extractions of our notes and the expected notes. Meaning - we can treat the recorded notes as an estimation (*ŷ*) of the expected notes (*y*) and calculate the residuals from them. With the residuals the MSE (Mean Squared Error) can be calculated **per session**, **per day** and also **per note**. The closer to zero the MSE, the more accurate our recreation of the G-scale is. 
+To measure the **accuracy of the recorded G-scale**, we can calculate the difference between numeric extractions of our notes and the expected notes. Meaning - we can treat the recorded notes as an estimation (*ŷ*) of the expected notes (*y*) and calculate the residuals from them. With the residuals the MSE (Mean Squared Error) can be calculated **per session**, **per day** and also **per note**. The closer to zero the MSE, the more accurate our recreation of the G-scale is. 
 
 ```R
 plotProgress <- function(performance, by){ # we can pass in the performance df and define the variable by which we want to calculate the accuracy (MSE)
@@ -206,7 +206,7 @@ plotProgress(performance[performance$expected_notenames != "g",], by = "expected
 
 ![image](accuracy_session_day_notes.gif)
 
-Concluding from my scores over the different sessions, I can see a lot of ups and downs, but I am happy to see that there is an overall increase in my accuracy of playing the G-scale. To plot this with a smooth line, we could make a more fancy plot of the accuracy, using ggplot:
+I can see a lot of ups and downs in the scores of my different sessions, but I am happy to see an overall increase in my accuracy of playing the G-scale. To take away the ups and downs and visualize the progress with a smooth line instead, we can use `geom_smooth()` from ggplot2:
 
 ```R
 progress <- plotProgress(performance, by = "session")
