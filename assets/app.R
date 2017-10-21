@@ -14,8 +14,10 @@ organisation <- organisation[order(organisation$name),]
 filter_by <- c("jobtitle","team","department","supervisor")
 
 ui <- fluidPage(
-  titlePanel(title=div(img(src="http://goodlifegarden.ucdavis.edu/blog/wp-content/uploads/2011/07/jala_pepper2.jpg", width = "10%"), "Embedded Pepper:", strong("who-is-who"))),
-  
+  #titlePanel("Organigram"),
+  tags$hr(),
+  htmlOutput("title"),
+  #titlePanel(title=div(img(src="http://goodlifegarden.ucdavis.edu/blog/wp-content/uploads/2011/07/jala_pepper2.jpg", width = "10%"), "Embedded Pepper:", strong("who-is-who"))),
   tags$hr(),
   fluidRow(
     column(4, selectInput("name","Who are you looking for?",choices = organisation$name))  ),
@@ -37,6 +39,9 @@ ui <- fluidPage(
 )
 
 server <- function(input, output){
+  output$title <- renderText({
+    '<div> <h1><img src="http://goodlifegarden.ucdavis.edu/blog/wp-content/uploads/2011/07/jala_pepper2.jpg", width = "10%"> Embedded Pepper: <b>who-is-who</b> </h1></div>'
+  })
   output$columns = renderUI({
     fluidRow(
       column(3, selectInput('selected', 'Select: ', unique(organisation[,tolower(input$sub)])))
@@ -46,11 +51,11 @@ server <- function(input, output){
     c('<img src="',organisation$photo_link[organisation$name == input$name],'" width = "300px", height = "auto">')
   })
   output$info <- renderText({
-    c('<p><b>Name: </b>',organisation$name[organisation$name == input$name],'</p>',
+    c('<div style="margin-left:2cm;"><p><b>Name: </b>',organisation$name[organisation$name == input$name],'</p>',
       '<p><b>Position: </b>',organisation$jobtitle[organisation$name == input$name],'</p>',
       '<p><b>Team: </b>',organisation$team[organisation$name == input$name],'</p>',
       '<p><b>Department: </b>',organisation$department[organisation$name == input$name],'</p>',
-      '<p><b>Email: </b>',organisation$email[organisation$name == input$name],'</p></br>')
+      '<p><b>Email: </b>',organisation$email[organisation$name == input$name],'</p></div></br>')
   })
   output$teaminfo <- renderText({
     c('</br><p><b>',input$sub,'Info: </b>',input$selected)
