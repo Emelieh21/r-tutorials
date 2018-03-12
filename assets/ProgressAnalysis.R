@@ -1,14 +1,14 @@
 #install.packages("tuneR")
-#install.packages("pastecs")
 #install.packages("audio")
 
-setwd("D:/emeli/Documents/Violin Classes/")
+setwd("SET WORKING DIRECTORY")
 
 library(audio)
 library(tuneR)
-library(pastecs)
 
-source("ProgressAnalysisFunctions.R")
+source("ProgressAnalysisFunctions.R") # The audiorec function in this script will look 
+# for a folder named "recordings" in the working directory and the transcribeMusic function
+# looks for a folder named "plots" to save the plots in.
 
 tuneR::play(originalSound)
 
@@ -24,12 +24,11 @@ results <- transcribeMusic(testSound, expNotes = scaleNotes)
 performance <- updatePerformance(results)
 
 plotPerformance(performance)
-#scoreAll(performance)
 plotProgress(performance, by = "session")
 plotProgress(performance[performance$expected_notenames != "g",], by = "session")
 plotProgress(performance, by = "date")
 plotProgress(performance[performance$expected_notenames != "g",], by = "date")
 plotProgress(performance, by = "expected_notenames")
 plotProgress(performance[performance$expected_notenames != "g",], by = "expected_notenames")
-#View(performance)
+
 

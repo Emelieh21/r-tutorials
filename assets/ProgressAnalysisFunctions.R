@@ -37,9 +37,7 @@ expNotes = NULL
 
 transcribeMusic <- function(wavFile, widthSample = 4096, expNotes = NULL) {
   #See details about the wavFile, plot it, and/or play it
-  #summary(wavFile)
   plot(wavFile)
-  #tuneR::play(wavFile)
   
   perioWav <- periodogram(wavFile, width = widthSample)
   freqWav <- FF(perioWav)
